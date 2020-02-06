@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator,MinValueValidator
 class Location(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     location = models.CharField(max_length=50)
+    print "syso"
 
     def __str__(self):
         return '%s' % (self.location)
