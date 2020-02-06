@@ -1,0 +1,13 @@
+{% include 'movie/library.html' %}
+
+<form method = 'POST' enctype="multipart/form-data">
+     {% csrf_token %}
+    <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#FFFF99;">
+        <tr>
+            <td> Name : {{user}} </td>
+
+        </tr>
+        <tr> <td> Location : <input type="text" name="location" placeholder="{{location.location}}"> </td> </tr>
+    </table>
+    <button type="submit" class="btn btn-lg btn-warning">Submit</button>
+</form>

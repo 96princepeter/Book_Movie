@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include 'movie/library.html' %}
+
+
+
+<center>
+<h1> Movie Rating form</h1>
+    <form method = 'POST' enctype="multipart/form-data">
+    {% csrf_token %}
+        <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#FF9999;">
+            <tr>
+                <th>Name  </th>
+                <td>{{ rating.movie.name }}</td>
+            </tr>
+            <tr>
+                <th>Director  </th>
+                <td>{{ rating.movie.director }}</td>
+            </tr>
+            <tr>
+                <th>Describe  </th>
+                <td>{{ rating.movie.describe }}</td>
+            </tr>
+            <tr>
+                <th>Total number of Rating : </th>
+                <td>{{ rating.movie.no_of_rating }}</td>
+            </tr>
+             <tr>
+                <th>Average Rating : </th>
+                <td>{{ rating.movie.avg_rating }}</td>
+            </tr>
+            <tr>
+                <th>Your Rating : </th>
+                <td> <input type="text" placeholder="0">  </td>
+            </tr>
+
+
+        </table>
+        <button type="submit" class="btn btn-lg btn-warning">Submit</button>
+
+    </form>
+</center>
+</body>
+</html>
+
+

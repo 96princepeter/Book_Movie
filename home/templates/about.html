@@ -1,0 +1,10 @@
+{% include 'home.html' %}
+{% block body_block %}
+{% load static %}
+    <center>
+    <h1>This is about the developers of this webpage</h1>
+    <h2>Prince Peter InApp pvt</h2>
+    <h2>Year : {{ time | date:'Y' }}</h2>
+    <h2>Month : {{ time | date:'M' }}</h2>
+    </center>
+{% endblock %}

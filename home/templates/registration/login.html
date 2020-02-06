@@ -1,0 +1,19 @@
+{% include 'home.html' %}
+<center>
+{% block body_block %}
+    <div class="container" style="padding:10px;">
+        <h1 style="color:red"> LOGIN </h1>
+        {% block content %}
+         <form method="post" >
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+         </form>
+        <a class="navbar-link" href="{% url 'registration' %}"><button type="submit">Sign Up</button></a>
+        {% endblock %}
+    </div>
+
+{% endblock %}
+</center>
+
+

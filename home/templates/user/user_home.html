@@ -1,0 +1,42 @@
+<!--<!DOCTYPE html>-->
+<!--{% load static %}-->
+<!--<html>-->
+<!--<head>-->
+    <!--<title>Moive App</title>-->
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+<!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body style="background-color:#4DB6AC;">-->
+<!--{% block content %}-->
+<!--{% if user.is_authenticated %}-->
+<!--<nav class="navbar navbar-light" style="background-color:#FF0033;">-->
+    <!--<a href="{% url 'user_index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">Movie App</a>-->
+    <!--<a class="navbar-link btn-lg" href="{% url 'logout' %}" style="background-color:#FFCC33;color:#000000;">Logout</a>-->
+<!--</nav>-->
+<!--<br>-->
+<!--<div class="card-columns">-->
+    <!--{% for movie in shelf %}-->
+    <!--<div class="card" style="width: 18rem;">-->
+  <!--<a href="about_view/{{movie.id}}" > <img class="card-img-top" src="../{{ movie.picture.url }}"> </a>-->
+  <!--<div class="card-body">-->
+      <!--<center>-->
+    <!--<a href="about_view/{{movie.id}}" > <h5 class="card-title">{{ movie.name }}</h5> </a>-->
+      <!--<div class="card-footer bg-transparent border-dark">-->
+
+       <!--<a href="update/{{movie.id}}" class="btn btn-warning" id='{{movie.id}}'>edit</a>-->
+       <!--<a href="delete/{{movie.id}}" class="btn btn-danger" id='{{ movie.id}}'>delete</a>-->
+
+       <!--</div>-->
+      <!--</center>-->
+  <!--</div>-->
+<!--</div>-->
+    <!--{% endfor %}-->
+<!--</div>-->
+<!--{% else %}-->
+ <!--<center><br> <br> <br>-->
+      <!--<p>You are not logged in</p>-->
+     <!--<a href="{% url 'login' %}">login</a></center>-->
+<!--{% endif %}-->
+<!--{% endblock %}-->
+<!--</body>-->
+<!--</html>-->
