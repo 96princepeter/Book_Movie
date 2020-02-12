@@ -6,13 +6,17 @@
     <title>Title</title>
 </head>
 <body>
-{% include 'movie/library.html' %}
+{% include 'movie/header.html' %}
 
 
+<style>
+    td{
+    text-align:center;
+    }
 
+</style>
 <center>
 <h1> Movie Rating form</h1>
-    <form method = 'POST' enctype="multipart/form-data">
     {% csrf_token %}
         <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#FF9999;">
             <tr>
@@ -35,16 +39,21 @@
                 <th>Average Rating : </th>
                 <td>{{ rating.movie.avg_rating }}</td>
             </tr>
+
+            <!--Adding personal rating-->
+
             <tr>
-                <th>Your Rating : </th>
-                <td> <input type="text" placeholder="0">  </td>
+                <form method = 'POST' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <th>Your Rating : </th>
+                    <td> <input type="text" name="rating" style="text-align:center" value="{{ rating.star }}">  </td>
+
             </tr>
-
-
         </table>
-        <button type="submit" class="btn btn-lg btn-warning">Submit</button>
+    <button type="submit" class="btn btn-lg btn-warning">Submit</button>
+</form>
 
-    </form>
+
 </center>
 </body>
 </html>

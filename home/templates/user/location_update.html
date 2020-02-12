@@ -7,7 +7,17 @@
             <td> Name : {{user}} </td>
 
         </tr>
-        <tr> <td> Location : <input type="text" name="location" placeholder="{{location.location}}"> </td> </tr>
+        <tr>
+            <td> Location :
+                <select name="loc">
+                    {% for loc in location_all %}
+                    <option value="{{loc.id}}">
+                        {{loc.location_name}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
     </table>
     <button type="submit" class="btn btn-lg btn-warning">Submit</button>
 </form>

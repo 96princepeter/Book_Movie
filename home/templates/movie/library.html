@@ -16,13 +16,17 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
 <nav class="navbar navbar-light" style="background-color:#FF0033;">
     <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">Movie App</a>
     <a href="{% url 'upload-Movie' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Upload New Movie</a>
+    <a href="{% url 'upload-Location' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Movie Location</a>
+    <a href="{% url 'chat' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Chat</a>
     <a class="navbar-link btn-lg" href="{% url 'logout' %}" style="background-color:#FFCC33;color:#000000;">Logout</a>
 </nav>
 <br>
 
 <div class="card-columns">
     {% for movie in shelf %}
+    {% if movie.status == 1 %}
     <div class="card" style="width: 18rem;">
+
         <a href="about_view/{{movie.id}}" > <img class="card-img-top" src="../{{ movie.picture.url }}"> </a>
         <div class="card-body">
             <center>
@@ -32,10 +36,12 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
                     <a href="update/{{movie.id}}" class="btn btn-warning" id='{{movie.id}}'>edit</a>
                     <a href="delete/{{movie.id}}" class="btn btn-danger" id='{{ movie.id}}'>delete</a>
 
+
                 </div>
             </center>
         </div>
     </div>
+     {% endif %}
     {% endfor %}
 </div>
 
@@ -44,25 +50,41 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
 {% else %}
  <nav class="navbar navbar-light" style="background-color:#FF0033;">
     <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">Movie App</a>
-    <a href="{% url 'location' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Profile</a>
+    <a href="{% url 'user_location' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Profile</a>
+    <a href="{% url 'chat' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Chat</a>
     <a class="navbar-link btn-lg" href="{% url 'logout' %}" style="background-color:#FFCC33;color:#000000;">Logout</a>
 </nav>
+
+
 <div class="card-columns">
-    {% for movie in movies %}
-    <div class="card" style="width: 18rem;">
-        <a href="about_view/{{movie.id}}" > <img class="card-img-top" src="../{{ movie.picture.url }}"> </a>
-        <div class="card-body">
-            <center>
-            <a href="about_view/{{movie.id}}" > <h5 class="card-title">{{ movie.name }}</h5> </a>
-                <div class="card-footer bg-transparent border-dark">
-            <a href="rating/{{movie.id}}" > <h6 class="card-title">Total Average Rating  {{ movie.avg_rating }}</h6> </a>
+    {% if movies %}
+        {% for movie in movies %}
+
+        {% if  movie.movie.status == 1 %} <!-- check the movie status  Active or Denied status-->
+        <div class="card" style="width: 18rem;">
+            <a href="about_view/{{movie.movie.id}}" > <img class="card-img-top" src="../{{ movie.movie.picture.url }}"> </a>
+            <div class="card-body">
+                <center>
+                <a href="about_view/{{movie.id}}" > <h5 class="card-title">{{ movie.movie.name }}</h5> </a>
+                    <div class="card-footer bg-transparent border-dark">
+                <a href="rating/{{movie.id}}" > <h6 class="card-title">Total Average Rating  {{movie.movie.avg_rating }}</h6> </a>
 
 
-                </div>
-            </center>
+                    </div>
+                </center>
+            </div>
         </div>
+        {% endif %}
+        {% endfor %}
+    {% else %}
+    <div>
+        <h2> plz update your location <br><a href="{% url 'user_location' %}" <h4> Click the link & update </h4></a> </h2> <br> <br>
+
+
     </div>
-    {% endfor %}
+
+
+    {% endif %}
 </div>
 
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+{% include 'movie/header.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body style="background-color:#4DB6AC;">
+{% block content %}
+
+
+<div class="card-columns col-6" style="width:50%">
+    <div class="card" style="width: 25rem;">
+        <div class="card-body" ">
+            <center>
+            <form method="POST">
+                {% csrf_token %}
+                <h1> Add Locations </h1>
+                <table class = 'w-50 h-50 table table-light' style="border-radius:10px;background-color:#FF9999;">
+                    <tr>
+                        <th>movie name  </th>
+                        <td>{{ shelf.name }}</td>
+                    </tr>
+                    <tr>
+                        <th> Location </th>
+                        <td>
+                            <select name="location_select">
+                                {% for loc in locations %}
+                                    <option value="{{loc.id}}"> {{ loc }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <button type="submit" value="Submit">Submit</button>
+            </form>
+            </center>
+        </div>
+    </div>
+</div>
+
+<div class="col-6" style="width:50%">
+    <h3> Movie Running Locations</h3>
+     <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#9999FF;text-align:center; width:50%">
+         <tr>
+             <th> Movie Name </th>
+             <th> Locations </th>
+         </tr>
+         {% for movie in data  %}
+        <tr>
+
+            <th>
+                {{ movie.movie.name }}
+            </th>
+            <td>
+             {{ movie.location.location_name }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+</body>
+</html>

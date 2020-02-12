@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Moive App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+</head>
+<body style="background-color:#4DB6AC;">
+{% block content %}
+{% if  user.is_staff %}
+
+
+<nav class="navbar navbar-light" style="background-color:#FF0033;">
+    <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">Movie App</a>
+    <a href="{% url 'upload-Movie' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Upload New Movie</a>
+    <a href="{% url 'upload-Location' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Movie Location</a>
+    <a class="navbar-link btn-lg" href="{% url 'logout' %}" style="background-color:#FFCC33;color:#000000;">Logout</a>
+</nav>
+
+
+{% else %}
+ <nav class="navbar navbar-light" style="background-color:#FF0033;">
+    <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">Movie App</a>
+    <a href="{% url 'user_location' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Profile</a>
+    <a class="navbar-link btn-lg" href="{% url 'logout' %}" style="background-color:#FFCC33;color:#000000;">Logout</a>
+</nav>
+
+
+{% endif %}
+{% endblock %}
+</body>
+</html>

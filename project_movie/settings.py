@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'home',
     'rest_framework',
 ]
@@ -70,8 +71,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project_movie.wsgi.application'
+ASGI_APPLICATION = 'project_movie.routing.application'
 
-
+# Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
