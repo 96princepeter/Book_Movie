@@ -1,14 +1,18 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect,get_object_or_404
+from django.contrib.auth import authenticate, login,get_user_model
 from django.contrib.auth.forms import UserCreationForm
-import datetime
-from django.views.generic.base import TemplateView
-from .models import Movie, UsersLocation, Rating, MovieLocation, Locations
-from .forms import MovieCreate
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from rest_framework import viewsets
+from django.utils.safestring import mark_safe
+from django.http import HttpResponse
+from django.views.generic.base import TemplateView
+from .models import Movie, UsersLocation, Rating,Locations,Chat,Messages
+from django.contrib.auth.models import User
+from .forms import MovieCreate
 from .serializers import RatingSerializer,MovieSerializer
+from rest_framework import viewsets
+import json
+import datetime
+
 
 
 """
@@ -37,8 +41,8 @@ def registration(request):
         form = UserCreationForm()
     return render(request, 'registration.html', {'form': form})
 def about(request):
-    time = datetime.datetime.now()
-    return render(request, 'about.html', {'time': time})
+
+    return render(request, 'about.html', {})
 
 """
     
@@ -56,7 +60,10 @@ def index(request): #index
 
         location = UsersLocation.objects.filter(user=request.user)
         if location.exists():
-            movies = MovieLocation.objects.filter(location= location.first().location)
+            print(location[0])
+            loc = Locations.objects.get(location_name=location[0])
+            movies = Movie.objects.filter(location= loc)
+            print(movies)
         else:
             movies = ''
         return render(request, 'movie/library.html', {'movies': movies})
@@ -134,18 +141,24 @@ class UpdateLocation(TemplateView):
         movie_id = self.kwargs.get('movie_id', None)
         if movie_id:
             movies = Movie.objects.get(id=movie_id)
-        movie_loc_qs = MovieLocation.objects.filter(movie_id=movie_id)
+        movie_loc_qs = Movie.objects.filter(id=movie_id)
         locations = Locations.objects.all()
         return render(request, self.template_name, {'shelf': movies, 'data': movie_loc_qs, 'locations': locations})
 
     def post(self,request,  *args, **kwargs):
         loc_id = request.POST.get('location_select')
         movie_id = self.kwargs.get('movie_id', None)
-        MovieLocation.objects.get_or_create(location_id=loc_id, movie_id=movie_id)
+
+        Movie.objects.get_or_create(location=loc_id, movie=movie_id)
+
         movies = Movie.objects.get(id=movie_id)
+        print(movies)
+
         locations = Locations.objects.all()
-        movie_loc_qs = MovieLocation.objects.filter(movie_id=movie_id)
-        print(movie_loc_qs )
+
+        movie_loc_qs = Movie.objects.filter(id=movie_id)
+
+
         return render(request, self.template_name, {'shelf': movies, 'data': movie_loc_qs, 'locations': locations})
         # return redirect('upload-Location')
 
@@ -187,7 +200,6 @@ class LocationUpdate(TemplateView):
             location_qs.update(location=location)
         else:
              loc = Locations.objects.filter(id=location)
-             print(loc.first())
              UsersLocation.objects.create(user=user,location=loc.first())
             # print('check end ')
         return redirect('index')
@@ -195,19 +207,18 @@ class LocationUpdate(TemplateView):
 
 #Rattinng movies
 
+
 class RateView(TemplateView):
     def get(self, request, *args, **kwargs):
         movie_id = self.kwargs.get('movie_id', None)
-        print(movie_id)
         movie_sel,obj = Rating.objects.get_or_create(movie_id=movie_id,user=request.user)
-
         return render(request, 'user/rating.html', {'rating': movie_sel})
 
     def post(self, request, *args, **kwargs):
         movie_id = kwargs.get('movie_id', None)
         new_rate = request.POST.get('rating')
-        Rating.objects.filter(movie_id=movie_id).update(star=new_rate)
-        movie_sel = Rating.objects.get(movie_id=movie_id)
+        Rating.objects.filter(movie_id=movie_id,user=request.user).update(star=new_rate)
+        movie_sel = Rating.objects.get(movie_id=movie_id,user=request.user)
         return render(request, 'user/rating.html', {'rating': movie_sel})
 
 
@@ -229,9 +240,35 @@ class MovieView(viewsets.ModelViewSet):
 
 
 def chatindex(request):
-    return render(request, 'chat/index.html', {})
-
+    return render(request, 'chat/index.html', {'user': request.user })
+@login_required
 def room(request, room_name):
     return render(request, 'chat/room.html', {
-        'room_name': room_name
+        'room_name': mark_safe(json.dumps(room_name)),
+        'username' : mark_safe(json.dumps(request.user.username))
     })
+
+
+
+class Room(TemplateView):
+    template_name = 'chat/room.html'
+
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_staff:
+            room = Chat.objects.get(room_name_id=User.objects.get(username=kwargs.get('roomname')))
+        else:
+            room = Chat.objects.get(room_name = request.user)
+
+        msg = Messages.objects.filter(room = room.id).order_by('-timestamp')[:10]
+        print('msg--', msg[::-1])
+        return render(request,self.template_name,{'message':msg[::-1],'room':room})
+
+
+
+class AdminChat(TemplateView):
+    template_name = 'chat/admin_chat.html'
+    def get(self, request, *args, **kwargs):
+        room = Chat.objects.all()
+
+        return render(request,self.template_name,{'chats':room})

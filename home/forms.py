@@ -1,5 +1,5 @@
 from django import forms
-from .models import Movie,MovieLocation
+from .models import Movie
 from .models import UsersLocation,Rating
 #DataFlair
 class MovieCreate(forms.ModelForm):
@@ -17,7 +17,4 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = '__all__'
 
-class MovieLocationForm(forms.ModelForm):
-    class Meta:
-        model = MovieLocation
-        fields = '__all__'
+

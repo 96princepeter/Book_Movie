@@ -1,0 +1,22 @@
+<!-- chat/templates/chat/room.html -->
+
+{% include 'movie/library.html' %}
+
+<body style="background-color:#4DB6AC;">
+<center>
+    <h2> Users </h2> <br/>
+
+
+<ul>
+        {% for chat in chats %}
+        <li>
+            <a href="{% url 'room' roomname=chat.room_name  %}">
+                {{ chat.room_name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+</center>
+</body>
+</html>

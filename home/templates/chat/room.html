@@ -1,33 +1,54 @@
 <!-- chat/templates/chat/room.html -->
 
-{% include 'movie/header.html' %}
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body>
+{% include 'movie/library.html' %}
 
-    <br>
-    <div class="container">
-        <h1> Admin Chat Box</h1>
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br/>
-        <input id="chat-message-input" type="text" size="100"/><br/>
-        <input id="chat-message-submit" type="button" value="Send"/>
-    </div>
+<body style="background-color:#4DB6AC;">
+    <center>
+        <h2> {{room }}</h2>
+            <table  id="chat-log" style="width:50%; background-color:white;" >
+             {% for msg in message %}
 
+                <tr>
+                    {% if msg.author == user %}
+                    <td id="chat-log"  style="text-align:right">
+                            {{ msg.content }}
+                    </td>
+                    {% else %}
+                    <td>
+                        {{ msg.content }}
+                    </td>
+                    {% endif %}
+
+                </tr>
+
+             {% endfor %}
+            </table>
+        <br/><br/>
+
+
+
+    <input id="chat-message-input" type="text" size="100" placeholder="Enter Something "/><br/> <br/><br/>
+    <input id="chat-message-submit" type="button" value="Send"/>
+    </center>
 </body>
+
+
 <script>
+
     var roomName = "{{ room_name|escapejs }}";
+    console.log({{ room_name}})
 
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
+        '/ws/chat/' + '{{room}}' + '/');
+
 
     chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        document.querySelector('#chat-log').innerHTML += ("<tr><td style='text-align:right'>"+message + "</td></tr>");
+        console.log("message",e)
+
     };
 
     chatSocket.onclose = function(e) {
@@ -51,4 +72,6 @@
         messageInputDom.value = '';
     };
 </script>
+
+
 </html>
