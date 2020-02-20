@@ -262,7 +262,7 @@ class Room(TemplateView):
 
         msg = Messages.objects.filter(room = room.id).order_by('-timestamp')[:10]
         print('msg--', msg[::-1])
-        return render(request,self.template_name,{'message':msg[::-1],'room':room})
+        return render(request,self.template_name,{'message':msg[::-1],'room':room,'user':request.user})
 
 
 
